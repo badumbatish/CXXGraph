@@ -24,7 +24,32 @@
 #pragma once
 #include "CXXGraph/Graph/Graph_decl.h"
 
+
+
 namespace CXXGraph {
+
+struct  {
+  int iterations;
+  int ants;
+  double alpha;
+  double beta;
+  double degradation_factor;
+  double pheromone_update_factor;
+  int randomization_seed;
+} ACO_config;
+
+
+template<typename T>
+std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph> g, std::shared_ptr<Node<T>> source_node, ACO_config cfg) {
+
+}
+
+template<typename T>
+virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor, int randomization_seed) const {
+
+
+}
+
 
 }
 #endif CXXGRAPH_TRAVELLINGSALESMAN_IMPL_H__
