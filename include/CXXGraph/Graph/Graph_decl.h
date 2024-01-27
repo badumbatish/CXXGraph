@@ -807,6 +807,17 @@ class Graph {
   virtual std::map<Node<T>, int> welshPowellColoring()  const;
 
   /**
+   *  @brief Travelling Salesman Algorithm with the Ant Colony Optimization approach
+   *
+   *  @param iterations
+   *  @param ants
+   *  @param alpha
+   *  @param beta
+   *  @param degradation_factor
+   *  @param pheromone_update_factor
+   */
+  virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor) const;
+  /**
    * \brief
    * This function writes the graph to an output file
    * Note: Not threadsafe
