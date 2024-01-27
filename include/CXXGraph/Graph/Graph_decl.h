@@ -815,8 +815,9 @@ class Graph {
    *  @param beta: The exponential scale factor for edge distance, such that the weight of each node is w = (pheromone_factor)**alpha / (edge_distance)**beta
    *  @param degradation_factor: The degradation factor for pheromone, such that new_pheromone_intensity = old_pheromone_intensity * degradation_factor
    *  @param pheromone_update_factor: The pheromone factor that an ant releases on each edge once, such that delta = pheromone_update_factor / length_of_cycle
+   *  @param randomization_seed: Randomization seed for testing.
    */
-  virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor) const;
+  virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor, int randomization_seed) const;
   /**
    * \brief
    * This function writes the graph to an output file
