@@ -55,7 +55,9 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
                                   std::shared_ptr<Node<T>> source_node,
                                   ACO_config<T> cfg,
                                   PheromoneMap<T> pheromoneMap) {
-
+  // TODO: Research edgeHash, see its interaction with T_EdgeSet, see
+  // if creating a new edge, how it will interact with the currently edge in the
+  // set
   // Set of pointers to nodes
   auto node_set = g->getNodeSet();
   auto edge_set = g->getEdgeSet();
