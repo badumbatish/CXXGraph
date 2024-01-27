@@ -809,12 +809,12 @@ class Graph {
   /**
    *  @brief Travelling Salesman Algorithm with the Ant Colony Optimization approach
    *
-   *  @param iterations
-   *  @param ants
-   *  @param alpha
-   *  @param beta
-   *  @param degradation_factor
-   *  @param pheromone_update_factor
+   *  @param iterations: The number of iterations that ACO_TSP will be run
+   *  @param ants: The number of ants that each iteration will use
+   *  @param alpha: The exponential scale factor for pheromone, such that the weight of each node is w = (pheromone_factor)**alpha / (edge_distance)**beta
+   *  @param beta: The exponential scale factor for edge distance, such that the weight of each node is w = (pheromone_factor)**alpha / (edge_distance)**beta
+   *  @param degradation_factor: The degradation factor for pheromone, such that new_pheromone_intensity = old_pheromone_intensity * degradation_factor
+   *  @param pheromone_update_factor: The pheromone factor that an ant releases on each edge once, such that delta = pheromone_update_factor / length_of_cycle
    */
   virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor) const;
   /**
