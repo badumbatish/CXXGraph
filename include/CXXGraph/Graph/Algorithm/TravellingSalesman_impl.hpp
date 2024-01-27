@@ -31,7 +31,9 @@ namespace CXXGraph {
 template<class T>
 using PheromoneMap = std::unordered_map<shared<const Node<T>>, std::unordered_map<shared<const Node<T>>, double>, nodeHash<T>>;
 
-struct ACO_config {
+template<class T>
+class ACO_config {
+ public:
   int iterations;
   int ants;
   double alpha;
@@ -40,16 +42,23 @@ struct ACO_config {
   double pheromone_update_factor;
   double starting_pheromone_level;
   int randomization_seed;
+  std::shared_ptr<AdjacencyMatrix<T>> adjMatrixPtr;
+  std::shared_ptr<const T_EdgeSet<T>> edgeSetPtr;
+
+  ACO_config() {
+
+  }
 };
 
 template <typename T>
 std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
                                   std::shared_ptr<Node<T>> source_node,
-                                  struct ACO_config cfg) {
+                                  ACO_config<T> cfg,
+                                  PheromoneMap<T> pheromoneMap) {
 
   // Set of pointers to nodes
   auto node_set = g->getNodeSet();
-
+  auto edge_set = g->getEdgeSet();
   // A hash-table to check visited nodes
   std::unordered_map<Node<T>, bool> visited = {};
   visited[*source_node] = true;
@@ -68,7 +77,8 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
       double pheromone_level;
 
       if (visited.find(node) == visited.end()) {
-
+        auto pheromone_level = std::max(pheromoneMap[current_node][node], 1e-5);
+        auto v = (pheromone_level**cfg.alpha);
       }
 
     }
@@ -76,7 +86,7 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
 
 }
 template<typename T>
-PheromoneMap<T> CreateMapOfPheromone(shared<AdjacencyMatrix<T>> adjMatrix , ACO_config cfg) {
+PheromoneMap<T> CreateMapOfPheromone(shared<AdjacencyMatrix<T>> adjMatrix , ACO_config<T> cfg) {
   PheromoneMap<T> pheromoneMap;
 
   for (auto &[nodeFrom, nodeToEdgeVec] : *adjMatrix) {
@@ -97,7 +107,7 @@ std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
                                                double starting_pheromone_level,
                                                int randomization_seed) const {
   // Configuration of the ACO
-  ACO_config cfg;
+  ACO_config<T> cfg;
   cfg.iterations = iterations;
   cfg.ants = ants;
   cfg.alpha = alpha;
@@ -106,6 +116,8 @@ std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
   cfg.pheromone_update_factor = pheromone_update_factor;
   cfg.starting_pheromone_level = starting_pheromone_level;
   cfg.randomization_seed = randomization_seed;
+  cfg.adjMatrixPtr = this->getAdjMatrix();
+  cfg.edgeSetPtr = make_shared<const T_EdgeSet<T>>(this->getEdgeSet());
 
   // Create a map of pheromone_intensity
   auto pheromoneMap = CreateMapOfPheromone(this->getAdjMatrix(), cfg);
