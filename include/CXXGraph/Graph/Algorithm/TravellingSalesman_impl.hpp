@@ -72,7 +72,15 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
 
 }
 template<typename T>
-std::unordered_map<Node<T>, std::vector<std::pair<Node<T>, double>>> CreateMapOfPheromone(std::shared_ptr<CXXGraph::Graph<T>> g) {
+std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> CreateMapOfPheromone(std::shared_ptr<CXXGraph::Graph<T>> g) {
+  std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> pheromoneMap = {};
+  auto adjMatrix = g->getAdjMatrix();
+
+  for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
+    for (auto &[nodeTo, _] : nodeToEdgeVec) {
+
+    }
+  }
   return {};
 }
 template <typename T>
