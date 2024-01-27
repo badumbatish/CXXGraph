@@ -73,17 +73,20 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
 
 }
 template<typename T>
-std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> CreateMapOfPheromone(std::shared_ptr<CXXGraph::Graph<T>> g) {
+std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> CreateMapOfPheromone(std::shared_ptr<CXXGraph::Graph<T>> g, ACO_config cfg) {
   std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> pheromoneMap = {};
   auto adjMatrix = g->getAdjMatrix();
 
   for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
-    for (auto &[nodeTo, _] : nodeToEdgeVec) {
+    pheromoneMap[nodeFrom] = {};
 
+    for (auto &[nodeTo, _] : nodeToEdgeVec) {
+      pheromoneMap[nodeFrom].push_back({nodeTo, cfg.starting_pheromone_level});
     }
   }
-  return {};
+  return pheromoneMap;
 }
+
 template <typename T>
 std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
                                                double alpha, double beta,
