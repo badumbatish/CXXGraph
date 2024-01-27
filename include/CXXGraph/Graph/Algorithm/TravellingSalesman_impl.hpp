@@ -35,6 +35,7 @@ struct ACO_config {
   double beta;
   double degradation_factor;
   double pheromone_update_factor;
+  double starting_pheromone_level;
   int randomization_seed;
 };
 
@@ -88,6 +89,7 @@ std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
                                                double alpha, double beta,
                                                double degradation_factor,
                                                double pheromone_update_factor,
+                                               double starting_pheromone_level,
                                                int randomization_seed) const {
   // Configuration of the ACO
   ACO_config cfg;
@@ -97,6 +99,7 @@ std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
   cfg.beta = beta;
   cfg.degradation_factor = degradation_factor;
   cfg.pheromone_update_factor = pheromone_update_factor;
+  cfg.starting_pheromone_level = starting_pheromone_level;
   cfg.randomization_seed = randomization_seed;
 
   // Create a map of pheromone_intensity

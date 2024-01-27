@@ -817,7 +817,7 @@ class Graph {
    *  @param pheromone_update_factor: The pheromone factor that an ant releases on each edge once, such that delta = pheromone_update_factor / length_of_cycle
    *  @param randomization_seed: Randomization seed for testing.
    */
-  virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor, int randomization_seed) const;
+  virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor, double starting_pheromone_level, int randomization_seed) const;
   /**
    * \brief
    * This function writes the graph to an output file
