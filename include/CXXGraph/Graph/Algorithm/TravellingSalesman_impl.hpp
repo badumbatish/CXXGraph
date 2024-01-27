@@ -28,7 +28,7 @@
 
 namespace CXXGraph {
 
-struct  {
+struct ACO_config {
   int iterations;
   int ants;
   double alpha;
@@ -36,20 +36,67 @@ struct  {
   double degradation_factor;
   double pheromone_update_factor;
   int randomization_seed;
-} ACO_config;
+};
 
+template <typename T>
+std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
+                                  std::shared_ptr<Node<T>> source_node,
+                                  struct ACO_config cfg) {
 
+  // Set of pointers to nodes
+  auto node_set = g->getNodeSet();
+
+  // A hash-table to check visited nodes
+  std::unordered_map<Node<T>, bool> visited = {};
+  visited[*source_node] = true;
+
+  // The current cycle
+  std::vector<Node<T>> cycle = {*source_node};
+
+  int steps = 0;
+  Node<T> current_node = *source_node;
+
+  while (steps < node_set.size() - 1) {
+    std::vector<Node<T>> jumps_candidate = {};
+    std::vector<double> candidate_value = {};
+
+    for (auto node : node_set) {
+      double pheromone_level;
+
+      if (visited.find(node) == visited.end()) {
+
+      }
+
+    }
+  }
+
+}
 template<typename T>
-std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph> g, std::shared_ptr<Node<T>> source_node, ACO_config cfg) {
+std::unordered_map<Node<T>, std::vector<std::pair<Node<T>, double>>> CreateMapOfPheromone(std::shared_ptr<CXXGraph::Graph<T>> g) {
+  return {};
+}
+template <typename T>
+std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
+                                               double alpha, double beta,
+                                               double degradation_factor,
+                                               double pheromone_update_factor,
+                                               int randomization_seed) const {
+  // Configuration of the ACO
+  ACO_config cfg;
+  cfg.iterations = iterations;
+  cfg.ants = ants;
+  cfg.alpha = alpha;
+  cfg.beta = beta;
+  cfg.degradation_factor = degradation_factor;
+  cfg.pheromone_update_factor = pheromone_update_factor;
+  cfg.randomization_seed = randomization_seed;
 
+  // Create a map of pheromone_intensity
+
+  return {};
 }
 
-template<typename T>
-virtual std::vector<Node<T>> ACO_TSP(int iterations, int ants, double alpha, double beta, double degradation_factor, double pheromone_update_factor, int randomization_seed) const {
 
 
 }
-
-
-}
-#endif CXXGRAPH_TRAVELLINGSALESMAN_IMPL_H__
+#endif
