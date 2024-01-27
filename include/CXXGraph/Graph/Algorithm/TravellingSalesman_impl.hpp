@@ -44,7 +44,7 @@ class ACO_config {
   int randomization_seed;
   std::shared_ptr<AdjacencyMatrix<T>> adjMatrixPtr;
   std::shared_ptr<const T_EdgeSet<T>> edgeSetPtr;
-
+  std::shared_ptr<PheromoneMap<T>> pheromoneMapPtr;
   ACO_config() {
 
   }
@@ -86,10 +86,10 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
 
 }
 template<typename T>
-PheromoneMap<T> CreateMapOfPheromone(shared<AdjacencyMatrix<T>> adjMatrix , ACO_config<T> cfg) {
+PheromoneMap<T> CreateMapOfPheromone(ACO_config<T> cfg) {
   PheromoneMap<T> pheromoneMap;
 
-  for (auto &[nodeFrom, nodeToEdgeVec] : *adjMatrix) {
+  for (auto &[nodeFrom, nodeToEdgeVec] : *cfg.adjMatrixPtr) {
     pheromoneMap[nodeFrom] = {};
 
     for (auto &[nodeTo, _] : nodeToEdgeVec) {
@@ -119,8 +119,8 @@ std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
   cfg.adjMatrixPtr = this->getAdjMatrix();
   cfg.edgeSetPtr = make_shared<const T_EdgeSet<T>>(this->getEdgeSet());
 
-  // Create a map of pheromone_intensity
-  auto pheromoneMap = CreateMapOfPheromone(this->getAdjMatrix(), cfg);
+  // Create a map of pheromone_intensity, then also add it to cfg
+  cfg.pheromoneMapPtr = make_shared<PheromoneMap<T>>(CreateMapOfPheromone(cfg));
   return {};
 }
 
