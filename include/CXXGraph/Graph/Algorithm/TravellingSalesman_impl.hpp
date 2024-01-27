@@ -28,6 +28,9 @@
 
 namespace CXXGraph {
 
+template<class T>
+using PheromoneMap = std::unordered_map<shared<const Node<T>>, std::unordered_map<shared<const Node<T>>, double>, nodeHash<T>>;
+
 struct ACO_config {
   int iterations;
   int ants;
@@ -73,15 +76,14 @@ std::vector<Node<T>> AntTraversal(std::shared_ptr<CXXGraph::Graph<T>> g,
 
 }
 template<typename T>
-std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> CreateMapOfPheromone(std::shared_ptr<CXXGraph::Graph<T>> g, ACO_config cfg) {
-  std::unordered_map<shared<Node<T>>, std::vector<std::pair<shared<Node<T>>, double>>, nodeHash<T>> pheromoneMap = {};
-  auto adjMatrix = g->getAdjMatrix();
+PheromoneMap<T> CreateMapOfPheromone(shared<AdjacencyMatrix<T>> adjMatrix , ACO_config cfg) {
+  PheromoneMap<T> pheromoneMap;
 
-  for (auto &[nodeFrom, nodeToEdgeVec] : adjMatrix) {
+  for (auto &[nodeFrom, nodeToEdgeVec] : *adjMatrix) {
     pheromoneMap[nodeFrom] = {};
 
     for (auto &[nodeTo, _] : nodeToEdgeVec) {
-      pheromoneMap[nodeFrom].push_back({nodeTo, cfg.starting_pheromone_level});
+      pheromoneMap[nodeFrom][nodeTo] = cfg.starting_pheromone_level;
     }
   }
   return pheromoneMap;
@@ -106,7 +108,7 @@ std::vector<Node<T>> Graph<T>::ACO_TSP(int iterations, int ants,
   cfg.randomization_seed = randomization_seed;
 
   // Create a map of pheromone_intensity
-
+  auto pheromoneMap = CreateMapOfPheromone(this->getAdjMatrix(), cfg);
   return {};
 }
 
